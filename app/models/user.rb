@@ -24,5 +24,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :bots, foreign_key: :owner_id
-  has_and_belongs_to_many :chats
+  has_and_belongs_to_many :chats, join_table: 'chats_users'
+
+  def inspect
+    email
+  end
 end

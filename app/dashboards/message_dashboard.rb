@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require 'administrate/base_dashboard'
 
-class BotDashboard < Administrate::BaseDashboard
+class MessageDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -10,13 +8,14 @@ class BotDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    chats: Field::HasMany,
+    chat: Field::BelongsTo,
     id: Field::Number,
-    name: Field::String,
-    owner: Field::BelongsTo.with_options(
-      class_name: 'User'
+    image: FileField,
+    text: Field::Text,
+    parse_mode: Field::Select.with_options(
+      collection: ['Plain text', 'Markdown', 'HTML']
     ),
-    token: Field::Password,
+    sent_at: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze
@@ -27,29 +26,33 @@ class BotDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    chats
+    chat
     id
-    name
-    owner
-    created_at
+    text
+    parse_mode
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    chats
+    chat
     id
-    name
-    owner
+    image
+    text
+    parse_mode
+    sent_at
+    created_at
+    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    chats
-    name
-    token
+    chat
+    image
+    parse_mode
+    text
   ].freeze
 
   # COLLECTION_FILTERS
@@ -64,10 +67,10 @@ class BotDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how bots are displayed
+  # Overwrite this method to customize how messages are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(bot)
-    bot.inspect
+  def display_resource(message)
+    message.inspect
   end
 end

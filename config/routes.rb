@@ -3,14 +3,6 @@
 # == Route Map
 #
 #                                Prefix Verb   URI Pattern                                                                              Controller#Action
-#                           admin_users GET    /admin/users(.:format)                                                                   admin/users#index
-#                                       POST   /admin/users(.:format)                                                                   admin/users#create
-#                        new_admin_user GET    /admin/users/new(.:format)                                                               admin/users#new
-#                       edit_admin_user GET    /admin/users/:id/edit(.:format)                                                          admin/users#edit
-#                            admin_user GET    /admin/users/:id(.:format)                                                               admin/users#show
-#                                       PATCH  /admin/users/:id(.:format)                                                               admin/users#update
-#                                       PUT    /admin/users/:id(.:format)                                                               admin/users#update
-#                                       DELETE /admin/users/:id(.:format)                                                               admin/users#destroy
 #                            admin_bots GET    /admin/bots(.:format)                                                                    admin/bots#index
 #                                       POST   /admin/bots(.:format)                                                                    admin/bots#create
 #                         new_admin_bot GET    /admin/bots/new(.:format)                                                                admin/bots#new
@@ -19,7 +11,32 @@
 #                                       PATCH  /admin/bots/:id(.:format)                                                                admin/bots#update
 #                                       PUT    /admin/bots/:id(.:format)                                                                admin/bots#update
 #                                       DELETE /admin/bots/:id(.:format)                                                                admin/bots#destroy
-#                            admin_root GET    /admin(.:format)                                                                         admin/users#index
+#                           admin_chats GET    /admin/chats(.:format)                                                                   admin/chats#index
+#                                       POST   /admin/chats(.:format)                                                                   admin/chats#create
+#                        new_admin_chat GET    /admin/chats/new(.:format)                                                               admin/chats#new
+#                       edit_admin_chat GET    /admin/chats/:id/edit(.:format)                                                          admin/chats#edit
+#                            admin_chat GET    /admin/chats/:id(.:format)                                                               admin/chats#show
+#                                       PATCH  /admin/chats/:id(.:format)                                                               admin/chats#update
+#                                       PUT    /admin/chats/:id(.:format)                                                               admin/chats#update
+#                                       DELETE /admin/chats/:id(.:format)                                                               admin/chats#destroy
+#                admin_message_publish POST   /admin/messages/:message_id/publish(.:format)                                           admin/messages#publish
+#                        admin_messages GET    /admin/messages(.:format)                                                                admin/messages#index
+#                                       POST   /admin/messages(.:format)                                                                admin/messages#create
+#                     new_admin_message GET    /admin/messages/new(.:format)                                                            admin/messages#new
+#                    edit_admin_message GET    /admin/messages/:id/edit(.:format)                                                       admin/messages#edit
+#                         admin_message GET    /admin/messages/:id(.:format)                                                            admin/messages#show
+#                                       PATCH  /admin/messages/:id(.:format)                                                            admin/messages#update
+#                                       PUT    /admin/messages/:id(.:format)                                                            admin/messages#update
+#                                       DELETE /admin/messages/:id(.:format)                                                            admin/messages#destroy
+#                           admin_users GET    /admin/users(.:format)                                                                   admin/users#index
+#                                       POST   /admin/users(.:format)                                                                   admin/users#create
+#                        new_admin_user GET    /admin/users/new(.:format)                                                               admin/users#new
+#                       edit_admin_user GET    /admin/users/:id/edit(.:format)                                                          admin/users#edit
+#                            admin_user GET    /admin/users/:id(.:format)                                                               admin/users#show
+#                                       PATCH  /admin/users/:id(.:format)                                                               admin/users#update
+#                                       PUT    /admin/users/:id(.:format)                                                               admin/users#update
+#                                       DELETE /admin/users/:id(.:format)                                                               admin/users#destroy
+#                            admin_root GET    /admin(.:format)                                                                         admin/messages#index
 #                      new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
 #                          user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
 #                  destroy_user_session DELETE /users/sign_out(.:format)                                                                devise/sessions#destroy
@@ -59,10 +76,14 @@
 
 Rails.application.routes.draw do
   namespace :admin do
-    resources :users
     resources :bots
+    resources :chats
+    resources :messages do
+      post 'publish'
+    end
+    resources :users
 
-    root to: 'users#index'
+    root to: 'messages#index'
   end
   devise_for :users
   # get 'welcome/index'

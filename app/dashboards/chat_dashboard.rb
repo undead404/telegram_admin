@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require 'administrate/base_dashboard'
 
-class BotDashboard < Administrate::BaseDashboard
+class ChatDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -10,13 +8,12 @@ class BotDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    chats: Field::HasMany,
+    bots: Field::HasMany,
     id: Field::Number,
+    messages: Field::HasMany,
     name: Field::String,
-    owner: Field::BelongsTo.with_options(
-      class_name: 'User'
-    ),
-    token: Field::Password,
+    users: Field::HasMany,
+    username: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze
@@ -27,29 +24,33 @@ class BotDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    chats
-    id
+    bots
     name
-    owner
-    created_at
+    username
+    id
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
-  SHOW_PAGE_ATTRIBUTES = %i[
-    chats
-    id
-    name
-    owner
-  ].freeze
+  SHOW_PAGE_ATTRIBUTES = %i[bots messages name username].freeze
+  # SHOW_PAGE_ATTRIBUTES = %i[
+  #   bots
+  #   users
+  #   messages
+  #   id
+  #   name
+  #   username
+  #   created_at
+  #   updated_at
+  # ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    chats
+    bots
     name
-    token
+    username
   ].freeze
 
   # COLLECTION_FILTERS
@@ -64,10 +65,10 @@ class BotDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how bots are displayed
+  # Overwrite this method to customize how chats are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(bot)
-    bot.inspect
+  def display_resource(chat)
+    chat.inspect
   end
 end

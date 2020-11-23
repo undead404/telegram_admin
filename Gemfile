@@ -36,6 +36,13 @@ gem 'devise', '~> 4.7.3'
 
 gem 'administrate'
 
+gem 'http'
+
+gem 'redcarpet'
+
+gem 'paperclip', '~> 6.0.0'
+gem 'paperclip-cloudinary'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

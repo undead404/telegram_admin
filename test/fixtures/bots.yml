@@ -3,6 +3,7 @@
 # Table name: bots
 #
 #  id                 :bigint           not null, primary key
+#  confirmed          :boolean          default(FALSE), not null
 #  encrypted_token    :string
 #  encrypted_token_iv :string
 #  name               :string           default("f"), not null
