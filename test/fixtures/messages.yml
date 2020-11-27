@@ -24,10 +24,17 @@
 #  fk_rails_...  (chat_id => chats.id)
 #
 
-plain_message:
-  text: "This is my post"
-  parse_mode: null
+html_message:
+  chat: cooking
+  parse_mode: HTML
+  text: "<a href='https://example.com/test'>Text of the link</a>"
 
 markdown_message:
+  chat: walking_channel
   text: "[Text of the link](https://example.com/test)"
   parse_mode: Markdown
+
+plain_message:
+  chat: walking_channel
+  text: "This is my post"
+  parse_mode: null

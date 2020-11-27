@@ -27,10 +27,10 @@ require 'redcarpet/render_strip'
 #  fk_rails_...  (chat_id => chats.id)
 #
 
+$break = "\r\n\r\n"
 $markdown_to_plain_text = Redcarpet::Markdown.new(Redcarpet::Render::StripDown)
 
 class Message < ApplicationRecord
-  after_save :edit, if: :text_changed?
   belongs_to :chat
   has_attached_file :image,
                     cloudinary_credentials: {
@@ -48,20 +48,15 @@ class Message < ApplicationRecord
                       thumbnail: '40x40>'
                     }
   readonly :chat
-  validates_attachment_content_type :image, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
-  validates_inclusion_of :parse_mode, in: %w[Markdown HTML], allow_null: true, message: '%s is not valid'
-  validates_presence_of :chat, message: 'should belong to a chat'
   validate :meaningful?
-
-  # def publish
-  #   puts JSON.pretty_generate as_json
-  #   data = if image.present?
-  #            bot.publish_photo(self)
-  #          else
-  #            bot.publish_message(self)
-  #          end
-  #   update!(message_id: data['message_id'], sent_at: data['date'])
-  # end
+  validates :chat, presence: true
+  validates :parse_mode, inclusion: {
+    allow_null: true,
+    in: ['HTML', 'Markdown', 'Plain text'],
+    message: '%<value>s is not valid'
+  }
+  validates :role, inclusion: { in: %w[admin], allow_null: true }
+  validates_attachment_content_type :image, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
 
   def inspect
     (if parse_mode == 'Markdown'
@@ -71,8 +66,27 @@ class Message < ApplicationRecord
      end).truncate 27
   end
 
+  def paragraphs
+    pgs = []
+    max_paragraph_length = image.present? ? 200 : 4096
+    inline_pgs = (text.split $break).map(&:strip).reject(&:blank?)
+    next_paragraph = ''
+    inline_pgs.each do |inline_paragraph|
+      next_paragraph_extended = next_paragraph.present? ? "#{next_paragraph}#{$break}#{inline_paragraph}" : inline_paragraph
+      if next_paragraph_extended.length > max_paragraph_length
+        pgs.push next_paragraph
+        next_paragraph = inline_paragraph
+        max_paragraph_length = 4096
+      else
+        next_paragraph = next_paragraph_extended
+      end
+    end
+    pgs.push next_paragraph
+    pgs
+  end
+
   def published?
-    message_id.present?
+    sent_at.present?
   end
 
   private
@@ -83,10 +97,6 @@ class Message < ApplicationRecord
         chat_item.id == chat.id
       end
     end
-  end
-
-  def edit
-    bot.edit_message_text(self) if message_id
   end
 
   def meaningful?

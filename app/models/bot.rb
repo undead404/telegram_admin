@@ -51,31 +51,29 @@ class Bot < ApplicationRecord
 
   # rubocop:disable Naming/AccessorMethodName
 
-  def edit_message_text(message)
-    params = { chat_id: message.chat.chat_id, message_id: message.message_id, text: text }
-    params[:parse_mode] = message.parse_mode unless message.parse_mode == 'Plain text'
-    request_api('editMessageText', :post, { json: params })
-  end
-
   def get_me
     request_api('getMe')
   end
 
   def publish_message(message)
     puts 'publish_message'
-    if message.image.present?
-      publish_photo(message)
-    else
-      params = { chat_id: message.chat.chat_id, text: message.text }
-      params[:parse_mode] = message.parse_mode unless message.parse_mode == 'Plain text'
-      request_api('sendMessage', :post, { json: params })
+    message.paragraphs.each_with_index do |paragraph, i|
+      if i.zero? && message.image.present?
+        publish_photo(message.image, paragraph, message.chat, message.parse_mode)
+      else
+        params = { chat_id: message.chat.chat_id, text: message.text }
+        params[:parse_mode] = message.parse_mode unless message.parse_mode == 'Plain text'
+        puts JSON.pretty_generate params
+        request_api('sendMessage', :post, { json: params })
+      end
     end
   end
 
-  def publish_photo(message)
+  def publish_photo(image, caption, chat, parse_mode = 'Plain text')
     puts 'publish_photo'
-    params = { caption: message.text, chat_id: message.chat.chat_id, photo: message.image.to_s }
-    params[:parse_mode] = message.parse_mode unless message.parse_mode == 'Plain text'
+    params = { caption: caption, chat_id: chat.chat_id, photo: image.to_s }
+    params[:parse_mode] = parse_mode unless parse_mode == 'Plain text'
+    puts JSON.pretty_generate params
     request_api('sendPhoto', :post, { form: params })
   end
   # rubocop:enable Naming/AccessorMethodName
@@ -87,7 +85,11 @@ class Bot < ApplicationRecord
   private
 
   def request_api(api_method_name, http_verb = :get, options = {})
-    response = HTTP.request(http_verb, format(API_URL_TEMPLATE, bot_token: token, api_method_name: api_method_name), options)
+    response = HTTP.request(
+      http_verb,
+      format(API_URL_TEMPLATE, bot_token: token, api_method_name: api_method_name),
+      options
+    )
     data = JSON.parse response.body.to_s
     puts JSON.pretty_generate data
     raise StandardError, "#{data['error_code']} #{data['description']}" unless data['ok']

@@ -9,10 +9,10 @@
 #  updated_at :datetime         not null
 #
 
-one:
-  name: MyString
-  username: MyString
+cooking_chat:
+  name: Cooking
+  username: cooking
 
-two:
-  name: MyString
-  username: MyString
+walking_channel:
+  name: Let's go walking
+  username: lets_go_walking

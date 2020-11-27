@@ -10,9 +10,13 @@
   <body>
     <header>
       <div>
-        <%= link_to "Main", root_path %>
-        <%= link_to "Admin", admin_root_path %>
-        <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+        <% if current_user.present? %>
+          <%= link_to "Main", root_path %>
+          <%= link_to "Admin", admin_root_path %>
+          <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+        <% else %>
+          <%= link_to "Sign in", new_user_session_path %>
+        <% end %>
       </div>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>

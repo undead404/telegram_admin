@@ -34,13 +34,13 @@ class BotTest < ActiveSupport::TestCase
   test 'Invalid without a name ending with "bot"' do
     bot = Bot.new(name: 'TestPerson', owner: users(:author))
     assert_not bot.valid?
-    assert_includes bot.errors[:name], 'Should end with "bot" or "Bot"'
+    assert_includes bot.errors[:name], 'should end with "bot" or "Bot"'
     assert_not bot.save
   end
   test 'Invalid without an owner' do
     bot = Bot.new(name: 'TestPerson')
     assert_not bot.valid?
-    assert_includes bot.errors[:owner], "can't be blank"
+    assert_includes bot.errors[:owner], 'should belong to a user'
     assert_not bot.save
   end
 end

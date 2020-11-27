@@ -10,6 +10,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  role                   :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -25,6 +26,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :bots, foreign_key: :owner_id
   has_and_belongs_to_many :chats, join_table: 'chats_users'
+
+  def admin?
+    role == 'admin'
+  end
 
   def inspect
     email

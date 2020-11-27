@@ -1,7 +1,7 @@
 require 'administrate/field/base'
 
 class FileField < Administrate::Field::Base
-  def url(style)
+  def url(style = nil)
     data.url(style)
   end
 

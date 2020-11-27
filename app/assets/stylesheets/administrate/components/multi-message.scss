@@ -1,0 +1,9 @@
+.multi-message {
+    textarea {
+        min-height: 150px;
+
+        &:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+    }
+}

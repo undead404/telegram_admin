@@ -1,1 +1,5 @@
-<%= image_tag field.url :normal %>
+<% if field.url %>
+    <%= image_tag field.url :normal %>
+<% else %>
+    No image yet
+<% end %>

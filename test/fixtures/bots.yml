@@ -20,10 +20,10 @@
 #  fk_rails_...  (owner_id => users.id)
 #
 
-one:
-  encrypted_token: MyString
-  encrypted_token_iv: MyString
+cooking_bot:
+  chats: cooking_chat
+  encrypted_token:
 
-two:
-  encrypted_token: MyString
-  encrypted_token_iv: MyString
+walking_bot:
+  chats: walking_channel
+  encrypted_token:

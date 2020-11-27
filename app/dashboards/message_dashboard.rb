@@ -11,7 +11,7 @@ class MessageDashboard < Administrate::BaseDashboard
     chat: Field::BelongsTo,
     id: Field::Number,
     image: FileField,
-    text: Field::Text,
+    text: MultiMessageField,
     parse_mode: Field::Select.with_options(
       collection: ['Plain text', 'Markdown', 'HTML']
     ),

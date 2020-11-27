@@ -1,8 +1,34 @@
+require 'date'
+
 module Admin
   class MessagesController < Admin::ApplicationController
+    protect_from_forgery with: :exception
+    before_action :authenticate_user!
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
+
+    def create
+      message_params = params[:message]
+      message_params[:text] = params[:text]
+      Message.create!(
+        chat: Chat.find(message_params[:chat_id]),
+        image: message_params[:image],
+        parse_mode: message_params[:parse_mode],
+        text: (message_params[:text].join "\r\n\r\n")
+      )
+    end
+
+    def update
+      message_params = params[:message]
+      message_params[:text] = params[:text]
+      Message.find(params[:id]).update!(
+        chat: Chat.find(message_params[:chat_id]),
+        image: message_params[:image],
+        parse_mode: message_params[:parse_mode],
+        text: (message_params[:text].join "\r\n\r\n")
+      )
+    end
 
     # Override this method to specify custom lookup behavior.
     # This will be used to set the resource for the `show`, `edit`, and `update`
@@ -43,8 +69,12 @@ module Admin
       message = Message.find(params[:message_id])
       bot = bot_for_chat(message.chat)
       data = bot.publish_message(message)
-      message.update!(message_id: data['message_id'], sent_at: data['date'])
+      message.update!(sent_at: Date.strptime(data['date'].to_s, '%s'))
       redirect_to admin_message_path(message), notice: "Message \"#{message}\" has been published to #{message.chat}."
+    end
+
+    def show_action?(action, resource)
+      !(action == :edit && resource.published?)
     end
 
     private

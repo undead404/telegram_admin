@@ -1,0 +1,48 @@
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+<div class="field-unit__field multi-message">
+  <script>
+    // document.addEventListener('DOMContentLoaded', function(){
+    //   const multiMessage = document.querySelector('.multi-message');
+    //   multiMessage.querySelectorAll('textarea').forEach(function(textareaElement){
+    //     textareaElement.addEventListener('change', function() {
+    //       console.info('textarea', this, this.value, this.value.length);
+    //       if(this.value.trim().length === 0 && multiMessage.querySelectorAll('textarea').length > 1) {
+    //         this.remove();
+    //       }
+    //     });
+    //   });
+    //   function maybeAddNextTextarea(){
+    //     console.info('textarea', this, this.value, this.value.length);
+    //     if(this.value.length < this.getAttribute('maxlength')) {
+    //       return;
+    //     }
+    //     this.removeEventListener('change', maybeAddNextTextarea);
+    //     const i = Number.parseInt(this.dataset.i) + 1;
+    //     const nextTextarea = document.createElement('textarea');
+    //     nextTextarea.dataset.i = i;
+    //     nextTextarea.setAttribute('height', 5);
+    //     nextTextarea.setAttribute('id', "<%= field.attribute %>-" + (i + 1));
+    //     nextTextarea.setAttribute('maxlength', 4096);
+    //     nextTextarea.setAttribute('name', "<%= field.attribute %>[]");
+    //     nextTextarea.addEventListener('change', maybeAddNextTextarea);
+    //     console.info(nextTextarea);
+    //     this.after(nextTextarea);
+    //   }
+    //   multiMessage.querySelector('textarea').addEventListener('change', maybeAddNextTextarea);
+    // })
+  </script>
+  <% field.to_paragraphs.each_with_index do |paragraph, i| %>
+    <textarea
+      data-i="<%= i%>"
+      height="5"
+      id="<%= field.attribute %>-<%= i + 1 %>"
+      maxlength="4096"
+      name="<%= field.attribute %>[]"
+    >
+      <%= paragraph %>
+    </textarea>
+    <%# <%= f.text_area "#{field.attribute}[]", value: paragraph %>
+  <% end %>
+</div>

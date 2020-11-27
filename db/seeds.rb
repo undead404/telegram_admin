@@ -10,5 +10,6 @@
 
 User.create({
               email: 'brute18@gmail.com',
-              password: 'password'
+              password: 'password',
+              role: 'admin'
             })
