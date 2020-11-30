@@ -29,7 +29,7 @@ API_URL_TEMPLATE = 'https://api.telegram.org/bot%<bot_token>s/%<api_method_name>
 
 # Telegram Bot
 class Bot < ApplicationRecord
-  attr_encrypted :token, key: ENV['ENCRYPTION_SECRET'], unless: Rails.env.development?
+  attr_encrypted :token, key: [ENV['ENCRYPTION_SECRET']].pack('H*'), unless: Rails.env.development?
   before_save do
     puts JSON.pretty_generate as_json
     self.chats = chats.reject(&:empty?)
