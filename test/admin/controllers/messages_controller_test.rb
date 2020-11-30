@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class UsersControllerTest < ActionDispatch::IntegrationTest
+class MessagesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   test 'index should redirect to login if unauthorized' do
     get admin_root_url

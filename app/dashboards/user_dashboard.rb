@@ -10,8 +10,8 @@ class UserDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    # bots: Field::HasMany,
-    # chats: Field::HasMany,
+    bots: Field::HasMany,
+    chats: Field::HasMany,
     id: Field::Number,
     email: Field::String,
     password: Field::Password,
@@ -41,7 +41,6 @@ class UserDashboard < Administrate::BaseDashboard
     chats
     id
     email
-    remember_created_at
     created_at
     updated_at
   ].freeze
