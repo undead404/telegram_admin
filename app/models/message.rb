@@ -40,7 +40,7 @@ class Message < ApplicationRecord
                       enhance_image_tag: true,
                       static_file_support: Rails.env.production?
                     },
-                    path: ':id/:style/:filename',
+                    path: "#{Rails.env}/:id/:style/:filename",
                     storage: :cloudinary,
                     styles: {
                       normal: '600x600>',
