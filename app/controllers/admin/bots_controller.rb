@@ -5,7 +5,7 @@ module Admin
     def create
       bot_params = params[:bot]
       Bot.create!(
-        chats: Chat.find(bot_params[:chat_ids]),
+        chats: Chat.find(bot_params[:chat_ids].reject(&:blank?)),
         name: bot_params[:name],
         owner: current_user,
         token: bot_params[:token]
