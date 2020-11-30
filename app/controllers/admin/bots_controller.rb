@@ -2,6 +2,16 @@
 
 module Admin
   class BotsController < Admin::ApplicationController
+    def create
+      bot_params = params[:bot]
+      Bot.create!(
+        chats: Chat.find(bot_params[:chat_ids]),
+        name: bot_params[:name],
+        owner: current_user,
+        token: bot_params[:token]
+      )
+    end
+
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
