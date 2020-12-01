@@ -15,15 +15,18 @@ require 'redcarpet/render_strip'
 #  text               :text             not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  author_id          :bigint
 #  chat_id            :bigint           not null
 #  message_id         :integer
 #
 # Indexes
 #
-#  index_messages_on_chat_id  (chat_id)
+#  index_messages_on_author_id  (author_id)
+#  index_messages_on_chat_id    (chat_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (author_id => users.id)
 #  fk_rails_...  (chat_id => chats.id)
 #
 
@@ -31,6 +34,7 @@ $break = "\r\n\r\n"
 $markdown_to_plain_text = Redcarpet::Markdown.new(Redcarpet::Render::StripDown)
 
 class Message < ApplicationRecord
+  belongs_to :author, class_name: :User, foreign_key: :author_id
   belongs_to :chat
   has_attached_file :image,
                     cloudinary_credentials: {
@@ -49,6 +53,7 @@ class Message < ApplicationRecord
                     }
   readonly :chat
   validate :meaningful?
+  validates :author, presence: true
   validates :chat, presence: true
   validates :parse_mode, inclusion: {
     allow_null: true,

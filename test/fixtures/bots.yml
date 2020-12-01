@@ -23,7 +23,13 @@
 cooking_bot:
   chats: cooking_chat
   encrypted_token:
+  id: 1
+  name: cooking_bot
+  owner_id: 1
 
 walking_bot:
   chats: walking_channel
   encrypted_token:
+  id: 2
+  name: walking_bot
+  owner_id: 2

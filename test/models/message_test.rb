@@ -12,15 +12,18 @@
 #  text               :text             not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  author_id          :bigint
 #  chat_id            :bigint           not null
 #  message_id         :integer
 #
 # Indexes
 #
-#  index_messages_on_chat_id  (chat_id)
+#  index_messages_on_author_id  (author_id)
+#  index_messages_on_chat_id    (chat_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (author_id => users.id)
 #  fk_rails_...  (chat_id => chats.id)
 #
 require 'test_helper'

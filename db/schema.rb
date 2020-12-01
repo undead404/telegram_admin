@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_25_124244) do
+ActiveRecord::Schema.define(version: 2020_12_01_104903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,8 @@ ActiveRecord::Schema.define(version: 2020_11_25_124244) do
     t.string "image_content_type"
     t.integer "image_file_size"
     t.datetime "image_updated_at"
+    t.bigint "author_id"
+    t.index ["author_id"], name: "index_messages_on_author_id"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
@@ -84,4 +86,5 @@ ActiveRecord::Schema.define(version: 2020_11_25_124244) do
 
   add_foreign_key "bots", "users", column: "owner_id"
   add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users", column: "author_id"
 end

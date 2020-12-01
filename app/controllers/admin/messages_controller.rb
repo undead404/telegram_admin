@@ -3,7 +3,7 @@ require 'date'
 module Admin
   class MessagesController < Admin::ApplicationController
     protect_from_forgery with: :exception
-    before_action :authenticate_user!
+    # before_action :authenticate_user!
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
@@ -50,6 +50,14 @@ module Admin
     #     resource_class.with_less_stuff
     #   end
     # end
+    # Limit the scope of the given resource
+    def scoped_resource
+      if current_user.admin?
+        super
+      else
+        current_user.messages
+      end
+    end
 
     # Override `resource_params` if you want to transform the submitted
     # data before it's persisted. For example, the following would turn all

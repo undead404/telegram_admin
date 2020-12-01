@@ -28,6 +28,14 @@ module Admin
     #     resource_class.with_less_stuff
     #   end
     # end
+    # Limit the scope of the given resource
+    def scoped_resource
+      if current_user.admin?
+        super
+      else
+        current_user.chats
+      end
+    end
 
     # Override `resource_params` if you want to transform the submitted
     # data before it's persisted. For example, the following would turn all

@@ -11,8 +11,10 @@
 
 cooking_chat:
   name: Cooking
+  users: author
   username: cooking
 
 walking_channel:
   name: Let's go walking
+  users: helping_hand
   username: lets_go_walking

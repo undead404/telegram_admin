@@ -48,5 +48,8 @@ module Admin
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
+    def show_action?(_action, _resource)
+      current_user.admin?
+    end
   end
 end

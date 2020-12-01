@@ -25,9 +25,11 @@
 author:
   email: brute18@gmail.com
   encrypted_password: <%= User.new.send(:password_digest, 'testpassword') %>
+  id: 1
   role: admin
 helping_hand:
   email: help@example.com
   encrypted_password: <%= User.new.send(:password_digest, 'testpassword2') %>
+  id: 2
 # column: value
 #
