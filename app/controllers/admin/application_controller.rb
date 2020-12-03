@@ -27,17 +27,13 @@ module Admin
 
     # Redirect if the user is not permitted to access this resource
     def authorize_resource(resource)
-      puts 'authorize_resource'
       redirect_to admin_root_path unless show_action?(params[:action], resource)
     end
 
     # Hide links to actions if the user is not allowed to do them
     def show_action?(action, resource)
-      puts "show_action? #{action}, #{resource}"
       return true if current_user.admin?
-
-      # puts resource.methods.sort
-      puts resource.model_name
+=
       resource.to_s != 'User'
     end
   end

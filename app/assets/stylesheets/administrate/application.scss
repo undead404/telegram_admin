@@ -30,3 +30,7 @@
 @import "utilities/text-color";
 
 @import 'components/multi-message.scss';
+
+[data-react-class] {
+    display: contents;
+}

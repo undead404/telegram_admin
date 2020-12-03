@@ -56,7 +56,6 @@ class Bot < ApplicationRecord
   end
 
   def publish_message(message)
-    puts 'publish_message'
     message.paragraphs.each_with_index do |paragraph, i|
       if i.zero? && message.image.present?
         publish_photo(message.image, paragraph, message.chat, message.parse_mode)
@@ -70,7 +69,6 @@ class Bot < ApplicationRecord
   end
 
   def publish_photo(image, caption, chat, parse_mode = 'Plain text')
-    puts 'publish_photo'
     params = { caption: caption, chat_id: chat.chat_id, photo: image.to_s }
     params[:parse_mode] = parse_mode unless parse_mode == 'Plain text'
     puts JSON.pretty_generate params
