@@ -11,6 +11,7 @@
     "@types/lodash": "~4.14.108",
     "@types/react": "~17.0.0",
     "@types/react-dom": "~17.0.0",
+    "babel-loader": "~8.2.2",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "lodash": "~4.17.20",
     "prop-types": "~15.7.2",
