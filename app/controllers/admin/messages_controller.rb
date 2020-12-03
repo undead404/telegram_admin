@@ -12,6 +12,7 @@ module Admin
       message_params = params[:message]
       message_params[:text] = params[:text]
       Message.create!(
+        author: current_user,
         chat: Chat.find(message_params[:chat_id]),
         image: message_params[:image],
         parse_mode: message_params[:parse_mode],
