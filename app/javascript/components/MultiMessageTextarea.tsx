@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FocusEvent, useCallback } from "react";
+import React, { ChangeEvent, FocusEvent, useCallback } from 'react';
 
 export default function MultiMessageTextarea({
   attributeName,
@@ -12,14 +12,14 @@ export default function MultiMessageTextarea({
   i: number;
   maxLength: number;
   onBlur: (event: FocusEvent<HTMLTextAreaElement>) => void;
-  onChange: (newValue: string, i: number) => void;
+  onChange: (newValue: string, index: number) => void;
   value: string;
-}) {
+}): JSX.Element {
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
       onChange(event.target.value, i);
     },
-    [i]
+    [i, onChange],
   );
   return (
     <textarea

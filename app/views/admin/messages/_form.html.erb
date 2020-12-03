@@ -15,29 +15,6 @@ and renders all form fields for a resource's editable attributes.
 %>
 
 <%= form_for([namespace, page.resource], html: { class: "form message", multipart: true }) do |f| %>
-  <script>
-    // jQuery(function() {
-    //   const $form = jQuery("#edit_message_<%= page.resource.id %>");
-    //   const $firstTextarea = $form.find("textarea").first();
-    //   if($form.find("img").length > 0) {
-    //     $firstTextarea.attr("maxlength", 200);
-    //   }
-    //   $form.find('#message_image').change(function(){
-    //     $firstTextarea.attr("maxlength", this.val() ? 200 : 4096);
-    //   });
-    // });
-    document.addEventListener('DOMContentLoaded', function(){
-      const form = document.querySelector("<%= page.resource.id.present? ? "#edit_message_#{page.resource.id}" : "#new_message" %>");
-      const firstTextarea = form.querySelector("textarea");
-      const imageInput = form.querySelector('#message_image');
-      if(imageInput.files && imageInput.files.length > 0) {
-        firstTextarea.setAttribute("maxlength", 200);
-      }
-      imageInput.addEventListener('change', function(){
-        firstTextarea.setAttribute("maxlength", (this.files && this.files.length > 0) ? 200 : 4096);
-      });
-    })
-  </script>
   <% if page.resource.errors.any? %>
     <div id="error_explanation">
       <h2>
