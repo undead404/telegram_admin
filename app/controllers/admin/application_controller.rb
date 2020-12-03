@@ -31,9 +31,9 @@ module Admin
     end
 
     # Hide links to actions if the user is not allowed to do them
-    def show_action?(action, resource)
+    def show_action?(_action, resource)
       return true if current_user.admin?
-=
+
       resource.to_s != 'User'
     end
   end
