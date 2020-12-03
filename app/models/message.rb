@@ -60,7 +60,6 @@ class Message < ApplicationRecord
     in: ['HTML', 'Markdown', 'Plain text'],
     message: '%<value>s is not valid'
   }
-  validates :role, inclusion: { in: %w[admin], allow_null: true }
   validates_attachment_content_type :image, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
 
   def inspect

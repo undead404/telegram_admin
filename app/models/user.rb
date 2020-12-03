@@ -27,6 +27,7 @@ class User < ApplicationRecord
   has_and_belongs_to_many :chats, join_table: 'chats_users'
   has_many :bots, foreign_key: :owner_id
   has_many :messages, foreign_key: :author_id
+  validates :role, inclusion: { in: %w[admin], allow_null: true }
 
   def admin?
     role == 'admin'
