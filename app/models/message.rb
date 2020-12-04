@@ -1,3 +1,4 @@
+require 'json'
 require 'redcarpet'
 require 'redcarpet/render_strip'
 
@@ -52,7 +53,6 @@ class Message < ApplicationRecord
                       thumbnail: '40x40>'
                     }
   readonly :chat
-  validate :meaningful?
   validates :author, presence: true
   validates :chat, presence: true
   validates :parse_mode, inclusion: {
@@ -60,6 +60,7 @@ class Message < ApplicationRecord
     in: ['HTML', 'Markdown', 'Plain text'],
     message: '%<value>s is not valid'
   }
+  validates :text, presence: true
   validates_attachment_content_type :image, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
 
   def inspect
@@ -91,19 +92,5 @@ class Message < ApplicationRecord
 
   def published?
     sent_at.present?
-  end
-
-  private
-
-  def bot
-    current_user.bots.find do |bot_item|
-      bot_item.chats.include? do |chat_item|
-        chat_item.id == chat.id
-      end
-    end
-  end
-
-  def meaningful?
-    text.present?
   end
 end

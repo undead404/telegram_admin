@@ -29,7 +29,18 @@
 require 'test_helper'
 
 class MessageTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
+  # test 'can not be created for chat not owned' do
+  #   assert_not Message.create!(
+  #     author: users(:helping_hand),
+  #     chat: chats(:cooking_chat),
+  #     text: 'hello to cookers'
+  #   )
   # end
+  test 'can be created' do
+    assert Message.create!(
+      author: users(:helping_hand),
+      chat: chats(:walking_channel),
+      text: 'hello to walkers'
+    )
+  end
 end
