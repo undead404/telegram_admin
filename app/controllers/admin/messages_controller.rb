@@ -1,4 +1,5 @@
 require 'date'
+require 'json'
 
 module Admin
   class MessagesController < Admin::ApplicationController
@@ -11,13 +12,22 @@ module Admin
     def create
       message_params = params[:message]
       message_params[:text] = params[:text]
-      Message.create!(
-        author: current_user,
+      message = Message.new(
+        author_id: current_user.id,
         chat: Chat.find(message_params[:chat_id]),
         image: message_params[:image],
         parse_mode: message_params[:parse_mode],
         text: (message_params[:text].join "\r\n\r\n")
       )
+      puts JSON.pretty_generate message.as_json
+      message.save!
+      # Message.create!(
+      #   author_id: current_user.id,
+      #   chat: Chat.find(message_params[:chat_id]),
+      #   image: message_params[:image],
+      #   parse_mode: message_params[:parse_mode],
+      #   text: (message_params[:text].join "\r\n\r\n")
+      # )
     end
 
     def update
