@@ -21,6 +21,7 @@ module Admin
       )
       puts JSON.pretty_generate message.as_json
       message.save!
+      redirect_to action: 'index', notice: 'A message has been created'
       # Message.create!(
       #   author_id: current_user.id,
       #   chat: Chat.find(message_params[:chat_id]),

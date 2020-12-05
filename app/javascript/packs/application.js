@@ -25,3 +25,6 @@ global.toastr = toastr;
 const componentRequireContext = require.context('components', true);
 // eslint-disable-next-line react-hooks/rules-of-hooks
 ReactRailsUJS.useContext(componentRequireContext);
+document.addEventListener('turbolinks:load', () => {
+  ReactRailsUJS.mountComponents();
+});

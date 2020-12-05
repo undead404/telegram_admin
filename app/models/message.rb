@@ -35,6 +35,9 @@ $break = "\r\n\r\n"
 $markdown_to_plain_text = Redcarpet::Markdown.new(Redcarpet::Render::StripDown)
 
 class Message < ApplicationRecord
+  before_save do
+    puts JSON.pretty_generate as_json
+  end
   belongs_to :author, class_name: :User, foreign_key: :author_id
   belongs_to :chat
   has_attached_file :image,
