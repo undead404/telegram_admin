@@ -21,7 +21,7 @@ module Admin
       )
       puts JSON.pretty_generate message.as_json
       message.save!
-      redirect_to action: 'index', notice: 'A message has been created'
+      redirect_to admin_message_path(message), notice: 'A message has been created'
       # Message.create!(
       #   author_id: current_user.id,
       #   chat: Chat.find(message_params[:chat_id]),
@@ -34,12 +34,14 @@ module Admin
     def update
       message_params = params[:message]
       message_params[:text] = params[:text]
-      Message.find(params[:id]).update!(
+      message = Message.find(params[:id])
+      message.update!(
         chat: Chat.find(message_params[:chat_id]),
         image: message_params[:image],
         parse_mode: message_params[:parse_mode],
         text: (message_params[:text].join "\r\n\r\n")
       )
+      redirect_to admin_message_path(message), notice: 'The message has been updated'
     end
 
     # Override this method to specify custom lookup behavior.
@@ -88,8 +90,8 @@ module Admin
     def publish
       message = Message.find(params[:message_id])
       bot = bot_for_chat(message.chat)
-      data = bot.publish_message(message)
-      message.update!(sent_at: Date.strptime(data['date'].to_s, '%s'))
+      sent_at = bot.publish_message(message)
+      message.update!(sent_at: sent_at)
       redirect_to admin_message_path(message), notice: "Message \"#{message}\" has been published to #{message.chat}."
     end
 
