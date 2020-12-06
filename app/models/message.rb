@@ -76,7 +76,7 @@ class Message < ApplicationRecord
 
   def paragraphs
     pgs = []
-    max_paragraph_length = image.present? ? 200 : 4096
+    max_paragraph_length = image.present? ? 1024 : 4096
     inline_pgs = (text.split $break).map(&:strip).reject(&:blank?)
     next_paragraph = ''
     inline_pgs.each do |inline_paragraph|
