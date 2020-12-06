@@ -26,12 +26,12 @@ export default function MultiMessageTextarea({
   );
   return (
     <textarea
-      defaultValue={value}
       id={`${attributeName}-${i + 1}`}
       maxLength={maxLength}
       name={`${attributeName}[]`}
       onBlur={onBlur}
       onChange={handleChange}
+      value={value}
     />
   );
 }

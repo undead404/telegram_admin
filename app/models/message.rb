@@ -89,7 +89,7 @@ class Message < ApplicationRecord
         next_paragraph = next_paragraph_extended
       end
     end
-    pgs.push next_paragraph
+    pgs.push next_paragraph unless next_paragraph.blank?
     pgs
   end
 

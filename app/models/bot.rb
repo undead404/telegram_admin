@@ -61,7 +61,7 @@ class Bot < ApplicationRecord
       data = if i.zero? && message.image.present?
                publish_photo(message.image, paragraph, message.chat, message.parse_mode)
              else
-               params = { chat_id: message.chat.chat_id, text: message.text }
+               params = { chat_id: message.chat.chat_id, text: paragraph }
                params[:parse_mode] = message.parse_mode unless message.parse_mode == 'Plain text'
                puts JSON.pretty_generate params
                request_api('sendMessage', :post, { json: params })
