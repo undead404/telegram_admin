@@ -17,6 +17,9 @@ export default function MultiMessageTextarea({
 }): JSX.Element {
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
+      if (event.target.value.length > event.target.maxLength) {
+        return;
+      }
       onChange(event.target.value, i);
     },
     [i, onChange],

@@ -15,10 +15,10 @@ module Admin
       message = Message.new(
         author_id: current_user.id,
         chat: Chat.find(message_params[:chat_id]),
-        image: message_params[:image],
         parse_mode: message_params[:parse_mode],
         text: (message_params[:text].join "\r\n\r\n")
       )
+      message.image = message_params[:image] if message_params[:image].present?
       puts JSON.pretty_generate message.as_json
       message.save!
       redirect_to admin_message_path(message), notice: 'A message has been created'

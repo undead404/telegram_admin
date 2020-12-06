@@ -59,13 +59,13 @@ class Bot < ApplicationRecord
     sent_at = nil
     message.paragraphs.each_with_index do |paragraph, i|
       data = if i.zero? && message.image.present?
-        publish_photo(message.image, paragraph, message.chat, message.parse_mode)
-      else
-        params = { chat_id: message.chat.chat_id, text: message.text }
-        params[:parse_mode] = message.parse_mode unless message.parse_mode == 'Plain text'
-        puts JSON.pretty_generate params
-        request_api('sendMessage', :post, { json: params })
-      end
+               publish_photo(message.image, paragraph, message.chat, message.parse_mode)
+             else
+               params = { chat_id: message.chat.chat_id, text: message.text }
+               params[:parse_mode] = message.parse_mode unless message.parse_mode == 'Plain text'
+               puts JSON.pretty_generate params
+               request_api('sendMessage', :post, { json: params })
+             end
       sent_at = DateTime.strptime(data['result']['date'].to_s, '%s') unless sent_at.present?
     end
     sent_at
