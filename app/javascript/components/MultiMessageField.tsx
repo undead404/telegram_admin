@@ -5,12 +5,34 @@ import last from 'lodash/last';
 import map from 'lodash/map';
 import nth from 'lodash/nth';
 import without from 'lodash/without';
-import React, { useCallback, useEffect, useState } from 'react';
+import { parse } from 'query-string';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import MultiMessageTextarea from './MultiMessageTextarea';
 
 const MAX_CAPTION_LENGTH = 1024;
 const MAX_TEXT_MESSAGE_LENGTH = 4096;
 const BEFORE_LAST_INDEX = -2;
+
+const YOUTU_BE_REGEXP = /https:\/\/youtu\.be\/([^\s/]+)/;
+const YOUTUBE_WATCH_REGEXP = /https:\/\/www.youtube.com\/watch\?([^\s/]+)/;
+
+function useLogChanges<T>(where: string, what: string, value: T) {
+  useEffect(() => {
+    console.info(where, what, value);
+  }, [value, what, where]);
+}
+
+function getYoutubeId(text: string): string {
+  const youtuBeMatch = YOUTU_BE_REGEXP.exec(text);
+  if (youtuBeMatch) {
+    return youtuBeMatch[1];
+  }
+  const youtubeWatchMatch = YOUTUBE_WATCH_REGEXP.exec(text);
+  if (youtubeWatchMatch) {
+    return parse(youtubeWatchMatch[1]).v as string;
+  }
+  return '';
+}
 
 export default function MultiMessageField({
   attributeName,
@@ -20,9 +42,16 @@ export default function MultiMessageField({
   paragraphs: string[];
 }): JSX.Element {
   const [paragraphs, setParagraphs] = useState(initialParagraphs);
+  useLogChanges('MultiMessageField', 'paragraphs', paragraphs);
   const [isImagePresent, setIsImagePresent] = useState(false);
+  useLogChanges('MultiMessage', 'isImagePresent', isImagePresent);
   const dropExtraEmpty = useCallback(() => {
-    setParagraphs((paragraphsItems) => [...without(paragraphsItems, ''), '']);
+    setParagraphs((paragraphsItems) => {
+      if (nth(paragraphsItems, BEFORE_LAST_INDEX) !== '') {
+        return paragraphsItems;
+      }
+      return [...without(paragraphsItems, ''), ''];
+    });
   }, []);
   const handleImageChange: EventListener = useCallback((event) => {
     setIsImagePresent(!isEmpty(get(event.target, 'files')));
@@ -49,6 +78,37 @@ export default function MultiMessageField({
     }
     dropExtraEmpty();
   }, [dropExtraEmpty, paragraphs]);
+  const youtubePreviewSource = useMemo(() => {
+    let youtubeId = '';
+    forEach(paragraphs, (paragraph) => {
+      youtubeId = getYoutubeId(paragraph);
+      return !youtubeId;
+    });
+    if (!youtubeId) {
+      return '';
+    }
+    return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
+  }, [paragraphs]);
+  useLogChanges(
+    'MultiMessageField',
+    'youtubePreviewSource',
+    youtubePreviewSource,
+  );
+  useEffect(() => {
+    if (isImagePresent) {
+      return;
+    }
+    const messageImagePreview: HTMLImageElement = document.querySelector(
+      '.image-field img',
+    );
+    if (messageImagePreview) {
+      if (youtubePreviewSource) {
+        messageImagePreview.src = youtubePreviewSource;
+      } else {
+        messageImagePreview.src = '/no_image.png';
+      }
+    }
+  }, [isImagePresent, youtubePreviewSource]);
   const handleChange = useCallback((newValue: string, index: number) => {
     setParagraphs((paragraphsItems) => {
       if (newValue === paragraphsItems[index]) {

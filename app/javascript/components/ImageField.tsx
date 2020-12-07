@@ -25,7 +25,7 @@ export default function ImageField({
       <div className="field-unit__label">
         <label htmlFor={id}>Image</label>
       </div>
-      <div className="field-unit__field">
+      <div className="field-unit__field image-field">
         <img alt="Empty" src={fileUrl || '/no_image.png'} />
         <input
           id={id}
