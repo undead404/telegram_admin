@@ -11,6 +11,7 @@ module Admin
   class ApplicationController < Administrate::ApplicationController
     # before_action :authenticate_admin
     before_action :authenticate_user!
+    before_action :default_params
     # before_action :authorize_resource
 
     # def authenticate_admin
@@ -35,6 +36,13 @@ module Admin
       return true if current_user.admin?
 
       resource.to_s != 'User'
+    end
+
+    private
+
+    def default_params
+      params[:order] ||= "created_at"
+      params[:direction] ||= "desc"
     end
   end
 end
