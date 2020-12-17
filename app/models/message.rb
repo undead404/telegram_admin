@@ -64,7 +64,7 @@ class Message < ApplicationRecord
     message: '%<value>s is not valid'
   }
   validates :text, presence: true
-  validates_attachment_content_type :image, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
+  validates_attachment_content_type :image, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp']
 
   def inspect
     (if parse_mode == 'Markdown'
