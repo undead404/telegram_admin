@@ -6,4 +6,11 @@
             margin-bottom: 1rem;
         }
     }
+    .message-image-wrapper {
+        display: flex;
+        justify-content: center;
+        img {
+            max-height: 40vh;
+        }
+    }
 }

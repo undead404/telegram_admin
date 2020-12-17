@@ -26,7 +26,9 @@ export default function ImageField({
         <label htmlFor={id}>Image</label>
       </div>
       <div className="field-unit__field image-field">
-        <img alt="Empty" src={fileUrl || '/no_image.png'} />
+        <div className="message-image-wrapper">
+          <img alt="Empty" src={fileUrl || '/no_image.png'} />
+        </div>
         <input
           id={id}
           name={`${entityName}[${attributeName}]`}
