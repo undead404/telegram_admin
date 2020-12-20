@@ -45,14 +45,6 @@ export default function MultiMessageField({
   useLogChanges('MultiMessageField', 'paragraphs', paragraphs);
   const [isImagePresent, setIsImagePresent] = useState(false);
   useLogChanges('MultiMessage', 'isImagePresent', isImagePresent);
-  const dropExtraEmpty = useCallback(() => {
-    setParagraphs((paragraphsItems) => {
-      if (nth(paragraphsItems, BEFORE_LAST_INDEX) !== '') {
-        return paragraphsItems;
-      }
-      return [...without(paragraphsItems, ''), ''];
-    });
-  }, []);
   const handleImageChange: EventListener = useCallback((event) => {
     setIsImagePresent(!isEmpty(get(event.target, 'files')));
   }, []);
@@ -76,8 +68,8 @@ export default function MultiMessageField({
     if (last(paragraphs) === '' && nth(paragraphs, BEFORE_LAST_INDEX) !== '') {
       return;
     }
-    dropExtraEmpty();
-  }, [dropExtraEmpty, paragraphs]);
+    setParagraphs([...without(paragraphs, ''), '']);
+  }, [paragraphs]);
   const youtubePreviewSource = useMemo(() => {
     let youtubeId = '';
     forEach(paragraphs, (paragraph) => {
@@ -135,7 +127,7 @@ export default function MultiMessageField({
                 ? MAX_CAPTION_LENGTH
                 : MAX_TEXT_MESSAGE_LENGTH
             }
-            onBlur={dropExtraEmpty}
+            // onBlur={dropExtraEmpty}
             onChange={handleChange}
             value={paragraph}
           />
